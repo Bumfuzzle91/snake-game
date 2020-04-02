@@ -13,13 +13,17 @@ var follow
 var curve
 var distort_curve
 
-onready var head = get_parent()
+#onready var head = get_parent()
+var head
 
 var rid
 var tex
 
 var verts
 var uvs
+
+func _enter_tree():
+	head = get_parent()
 
 func _ready():
 	path = $SnakePath
