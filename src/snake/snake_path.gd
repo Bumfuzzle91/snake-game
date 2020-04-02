@@ -6,6 +6,14 @@ extends Path2D
 var length = 0
 var resolution = 0
 
+onready var body = get_parent()
+
+func _ready():
+	generate_path(body.length, body.resolution)
+	
+func _process(delta):
+	follow_target(body.head)
+
 func generate_path(_length, _resolution):
 	curve.clear_points()
 	

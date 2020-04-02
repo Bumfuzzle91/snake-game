@@ -31,13 +31,10 @@ func _ready():
 	rid = get_canvas_item()
 	tex = scale_texture.get_rid()
 	
-	path.generate_path(length, resolution)
-	
 	create_mesh_from_path()
 	update()
 
 func _process(delta):
-	path.follow_target(head)
 	create_mesh_from_path()
 	update()
 
