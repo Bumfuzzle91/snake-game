@@ -13,8 +13,7 @@ var follow
 var curve
 var distort_curve
 
-#onready var head = get_parent()
-var head
+onready var head = get_parent().get_child(0)
 
 var rid
 var tex
@@ -23,8 +22,8 @@ var verts
 var uvs
 
 func _enter_tree():
-	head = get_parent()
-
+	#head = get_parent()
+	pass
 func _ready():
 	path = $SnakePath
 	follow = path.get_child(0)
@@ -65,6 +64,7 @@ func _draw():
 
 	VisualServer.canvas_item_add_triangle_array(rid, indices, verts, PoolColorArray(), uvs,
 			PoolIntArray(), PoolRealArray(), tex)
+			
 
 func create_mesh_from_path():
 	verts = []
