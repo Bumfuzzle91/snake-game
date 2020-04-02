@@ -1,8 +1,6 @@
 #snake_path.gd
 extends Path2D
 
-#onready var follow = $PathFollow2D
-
 var length = 0
 var resolution = 0
 
@@ -13,7 +11,7 @@ func _ready():
 	generate_path(body.length, body.resolution)
 	
 func _process(delta):
-	follow_target(body.head)
+	follow_target(body.head.position)
 	update()
 
 func generate_path(_length, _resolution):

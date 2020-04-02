@@ -13,7 +13,7 @@ var follow
 var curve
 var distort_curve
 
-onready var head = get_parent().get_child(0)
+onready var head = get_parent().get_child(1)
 
 var rid
 var tex
@@ -39,6 +39,10 @@ func _ready():
 
 func _process(delta):
 	create_mesh_from_path()
+	
+	var angle = (curve.get_point_position(0) - curve.get_point_position(1)).angle()
+	head.rotation_degrees = rad2deg(angle)
+	
 	update()
 
 func _draw():
@@ -64,7 +68,6 @@ func _draw():
 
 	VisualServer.canvas_item_add_triangle_array(rid, indices, verts, PoolColorArray(), uvs,
 			PoolIntArray(), PoolRealArray(), tex)
-			
 
 func create_mesh_from_path():
 	verts = []
