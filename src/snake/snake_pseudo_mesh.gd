@@ -62,7 +62,7 @@ func _draw():
 	#clear canvas and offset drawing transform to align with snake's head
 	VisualServer.canvas_item_clear(rid)
 	VisualServer.canvas_item_add_set_transform(rid, t)
-#
+#	
 	VisualServer.canvas_item_add_triangle_array(rid, indices, verts, PoolColorArray(), uvs,
 			PoolIntArray(), PoolRealArray(), tex)
 
