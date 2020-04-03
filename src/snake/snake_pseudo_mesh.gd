@@ -77,15 +77,17 @@ func create_mesh_from_path(path, width):
 	for i in range(0, segments):
 		var point = points[i]
 		var follow_offset = curve.get_closest_offset(point)
-		var normal = (follow.position - point).normalized()
+		
 
 		#path follow offset in pixels
+		#must offset before getting normal, otherwise there are artifacts
 		follow.offset = follow_offset
+		var normal = (follow.position - point).normalized()
 		
 		var distort_curve = body.distort_curve_texture.curve
 		#multiply offset by distortion curve. values for interpolate expected to be normalized
 		var new_point_offset = point_offset * distort_curve.interpolate(follow_offset / curve.get_baked_length())
-
+		
 		verts.append(point - new_point_offset * normal)
 		verts.append(point + new_point_offset * normal)
 
