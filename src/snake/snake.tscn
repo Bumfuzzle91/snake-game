@@ -47,6 +47,7 @@ script = ExtResource( 3 )
 path = NodePath("../Path2D")
 
 [node name="Head" type="Sprite" parent="Body"]
+visible = false
 self_modulate = Color( 0.00392157, 0.666667, 0.141176, 1 )
 texture = ExtResource( 1 )
 script = ExtResource( 7 )
