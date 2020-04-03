@@ -1,27 +1,21 @@
 #snake_path.gd
 extends Path2D
 
-var length = 0
-var resolution = 0
-
 var body
 
 func _ready():
 	body = get_parent()
-	generate_path(body.length, body.resolution)
+	generate_path()
 	
 func _process(delta):
 	follow_target(body.position)
 
-func generate_path(_length, _resolution):
+func generate_path():
 	curve.clear_points()
-	
-	length = _length
-	resolution = _resolution
 
 	#total number of points = resolution + 1
-	for i in range(0, resolution + 1):
-		var pos = Vector2(i * length/resolution, 0)
+	for i in range(0, body.resolution + 1):
+		var pos = Vector2(i * body.length / body.resolution, 0)
 		
 		curve.add_point(pos)
 		
@@ -33,11 +27,12 @@ func follow_target(target_position):
 		var p2 = curve.get_point_position(i+1)
 
 		var vec = p1 - p2
-		vec = vec.normalized() * length / resolution	
+		vec = vec.normalized() * body.length / body.resolution	
 		curve.set_point_position(i+1, p1 - vec)
 
 func _draw():
 	#drawing transform is in local space, so we need to move to global so curve is in right spot
+	#for debug drawing, uncomment both lines below, and add update call to _process
 	
 #	draw_set_transform(Vector2(-to_global(position)), rotation, scale)
 #	draw_polyline(curve.get_baked_points(), Color.green, 20, true)
