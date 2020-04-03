@@ -1,7 +1,18 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://icon.png" type="Texture" id=1]
 [ext_resource path="res://snake/snake.gd" type="Script" id=2]
+[ext_resource path="res://snake/snake_pseudo_mesh.gd" type="Script" id=3]
+[ext_resource path="res://snake/snake_path.gd" type="Script" id=4]
+[ext_resource path="res://snake/textures/scales.png" type="Texture" id=5]
+[ext_resource path="res://snake/snake_body.gd" type="Script" id=6]
+[ext_resource path="res://snake/snake_head.gd" type="Script" id=7]
+
+[sub_resource type="Curve" id=2]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=3]
+curve = SubResource( 2 )
 
 [sub_resource type="Curve2D" id=1]
 _data = {
@@ -15,17 +26,24 @@ __meta__ = {
 }
 
 [node name="Body" type="Node2D" parent="."]
+script = ExtResource( 6 )
 __meta__ = {
 "_edit_group_": true
 }
+scale_texture = ExtResource( 5 )
+distort_curve_texture = SubResource( 3 )
 
 [node name="Path2D" type="Path2D" parent="Body"]
 curve = SubResource( 1 )
+script = ExtResource( 4 )
 
 [node name="PathFollow2D" type="PathFollow2D" parent="Body/Path2D"]
 
 [node name="PseudoMesh" type="Node2D" parent="Body"]
+script = ExtResource( 3 )
+path = NodePath("../Path2D")
 
 [node name="Head" type="Sprite" parent="Body"]
 self_modulate = Color( 0.00392157, 0.666667, 0.141176, 1 )
 texture = ExtResource( 1 )
+script = ExtResource( 7 )

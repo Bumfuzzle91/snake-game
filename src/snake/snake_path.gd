@@ -11,8 +11,7 @@ func _ready():
 	generate_path(body.length, body.resolution)
 	
 func _process(delta):
-	follow_target(body.head.position)
-	update()
+	follow_target(body.position)
 
 func generate_path(_length, _resolution):
 	curve.clear_points()
@@ -26,15 +25,13 @@ func generate_path(_length, _resolution):
 		
 		curve.add_point(pos)
 		
-func follow_target(target):
+func follow_target(target_position):
 	#curve positions in world space. makes it easier to work with them in body
-	curve.set_point_position(0, to_global(position))
+	curve.set_point_position(0, to_global(target_position))
 	for i in range(0, curve.get_point_count()-1):
 		var p1 = curve.get_point_position(i)
 		var p2 = curve.get_point_position(i+1)
-		
-		#print(p1, p2)
-		
+
 		var vec = p1 - p2
 		vec = vec.normalized() * length / resolution	
 		curve.set_point_position(i+1, p1 - vec)
