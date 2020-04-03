@@ -25,13 +25,16 @@ func _ready():
 	rid = body.get_canvas_item()
 	tex = body.scale_texture.get_rid()
 	
-	assign_mesh_data_from_path(path, body.width)
-	update()
+	update_and_draw_mesh()
 	
 func _process(delta):
-	assign_mesh_data_from_path(path, body.width)
+	update_and_draw_mesh()
+
+func update_and_draw_mesh():
+	assign_mesh_data_from_path()
+	distort_mesh()
 	update()
-	
+
 func _draw():
 	var indices = []
 	
@@ -63,7 +66,7 @@ func _draw():
 	VisualServer.canvas_item_add_triangle_array(rid, indices, verts, PoolColorArray(), uvs,
 			PoolIntArray(), PoolRealArray(), tex)
 
-func assign_mesh_data_from_path(path, width):
+func assign_mesh_data_from_path():
 	verts = []
 	uvs = []
 	path_normals = []
@@ -72,13 +75,13 @@ func assign_mesh_data_from_path(path, width):
 	var points = path.curve.get_baked_points()
 	var segments = points.size()
 
-	var point_offset = Vector2(width, width) * .5
+	var point_offset = Vector2(body.width, body.width) * .5
 	
 	#reverse the curve so that it is drawn (from our perspective) back to front
 	#otherwise the snake would appear to go under itself when overlapping itself
 	points.invert()
 	
-	follow.v_offset = width
+	follow.v_offset = body.width
 	for i in range(0, segments):
 		var point = points[i]
 		var follow_pixel_offset = curve.get_closest_offset(point)
@@ -98,13 +101,23 @@ func assign_mesh_data_from_path(path, width):
 		path_normals.append(-normal)
 		path_normals.append(normal)
 		
-		path_offsets.append(follow.offset)
-		path_offsets.append(follow.offset)
+		path_offsets.append(path_offset)
+		path_offsets.append(path_offset)
 		
 func distort_mesh():
-	pass
-#		var distort_curve = body.distort_curve_texture.curve
-#
-#		#multiply offset by distortion curve. values for interpolate expected to be normalized
-#		var new_point_offset = point_offset * distort_curve.interpolate(path_offset)
+	var distort_curve = body.distort_curve_texture.curve
+	
+	for i in range(0, verts.size()):
+		var point = verts[i]
+		
+		var normal = path_normals[i]
+		var offset = path_offsets[i]
+		var distort_ammount = distort_curve.interpolate(offset)
+		
+		#distort ammount should be in -1 to 1 range: This means we can shrink and grow the body segments
+		var new_point = point + body.width * .5 * normal * distort_ammount
+		
+		verts[i] = new_point
+		
+		
 
