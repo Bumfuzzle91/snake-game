@@ -5,3 +5,5 @@
 [resource]
 shader = ExtResource( 1 )
 shader_param/width = 64
+shader_param/uv_scale = Vector2( 4, 2 )
+shader_param/uv_translate = Vector2( 0, 0 )
