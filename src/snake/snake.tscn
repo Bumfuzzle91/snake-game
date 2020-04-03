@@ -9,7 +9,7 @@
 [ext_resource path="res://snake/snake_head.gd" type="Script" id=7]
 
 [sub_resource type="Curve" id=2]
-_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0.427273 ), 0.0, 0.0, 0, 0 ]
 
 [sub_resource type="CurveTexture" id=3]
 curve = SubResource( 2 )
