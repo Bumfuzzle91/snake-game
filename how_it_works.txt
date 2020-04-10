@@ -1,0 +1,46 @@
+How I'm going to distort my pseudo mesh.
+
+
+
+each prey will have data to accompany:
+
+A curve that is used to displace the mesh
+A normal map that is used for shading
+
+To animate the prey moving somehow, either manipulate both - normal then curves
+or write code to generate the curve from the normal data so animating curves is unecescary
+
+Obviously there is more to the prey - it's sprite for example, but thats the stuff that matters for distortion
+
+--------------------------------
+
+While this method does allow for having asymetrical curve distortions - just use a different curve for left and right side
+I likely won't do this because from a vore perspective, there isn't much side to side wriggling - more turning in place.
+
+I can get close to the same effect with some tricks, and I don't have to do any curve animation!
+
+For turning in place, I simply take the single symetric curve, and multiply each side by different amplitudes
+as one grows the other shrinks, make the rate of change a fast sine function, and it appears the prey is turning and encountering resistance before turning back the other way.
+
+To animate the normalmap turning in place, I either do this manually by creating fixed immages of different rotations, or I do some vector math to physically manipulate the map I already have.
+
+For wriggling, I can just apply a basic sin wave to the curve and normalmap to wiriggle a bit along the length of the snake
+
+---------------
+
+no animations means that I can either draw a heightmap and make the normal map from that, or I can get it from a 3d model.
+
+--------------
+&&&&&&&&&&&&&&
+
+So the curve controls the amplitude of the meshes displacement, and the normal map...
+
+To do the normal mapping, the plan is to have a seperate viewport of the same dimesions as the snake - past the head that is as the head doesn't distort - the viewport will be used as a render texture in the main snake shader, it will just see the texture as any other normal map
+
+on the scene side of things, the prey's normal map will move up and down the viewport texture, based on the offset value from the snakes internal path follow node. if you were to view the generated viewport texture, the prey would appear to move irregularly, but on the mesh it will appear constant - this is because moving at a constant speed on a curve isn't moving at a constant linear speed.
+
+------------------
+
+finally, once the normal map is in the shader, the prey needs to have the appearance of being enveloped in a tight skin - basically they need to look like they are being shrinkwrapped. 
+
+To do this, a gaussian blur - (or an approximation using multiple box blurs) is applied, and compared to the original normal map. The max of the two values is the value of that current pixel - I may need to do this with a mix of cpu and gpu. We'll see. 
