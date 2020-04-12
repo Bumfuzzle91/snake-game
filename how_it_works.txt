@@ -1,6 +1,67 @@
+How I got to where I am.
+
+This document is mostly for me, so I'm not completely lost when I return.
+
+As of putting the project on hiatus, I have the following results:
+
+
+A variable length snake that follows a head - currently controlled by the mouse
+
+The snake is textured along its length, and when overlapping itself, it appears to go on top, not below.
+
+-------------------------
+
+How it works:
+
+As a broad overview, the snake is a path node, and a path follow node
+the path starts at a given position - the head, and goes however long I want
+
+to create the body, I tried several methods
+
+polygon 2d - doesn't work because the polygon is invalid when self intersecting, because there are no
+triangles, the engine doesn't know how to handle it
+
+line 2D - Worked better than polygon, but I didn't have as much control as I would've liked - couldn't access
+the generated mesh points, only the path I passed in to create it.
+
+In the end, I ended up doing everything the hard way. By creating my own pseudo 2d mesh, and rendering it using godot's visual server
+
+----------------------------
+
+I started with the path, which is just a series of points, to make the path follow a target, I stole the code from paper.js chain example
+and applyed it to my scenario. Once that worked, I needed to create an actual mesh.
+
+The overall node structure for the snake was a tough problem to figure out - should the path be a parent of the mesh, a child?
+
+Eventually I decided that each node would do its own thing, using references to others as needed with exported nodepaths
+
+The entire body functionallity of the snake was put under a node-2d "Body" node, that acted as more of a container and reference for everything else
+I could have used this node as a main controller, with all of the children functioning as glorified utility classes, but not all of the nodes functioned the same way, and I decided I would put all the mess for a given function into its own node, and keep the body node clean - this also means that for things like movement, or health, the root node for the snake has no code for things like mesh generation.
+
+So with the snake's node structure figured out, and the path working, I needed to figure out how to generate my "mesh"
+
+I ended up using the path's path follow node to generate offsets on the left and right sides of the path, from there it was a matter of assigning vertices and uv's, and later path offsets and normal directions (from the path, not the vertices actual normal) to their own pool Vector2 arrays.
+
+then, using a curve texture as an export variable, I was able to distort the mesh along it's length using that curve.
+
+to render, I ended up needing to use godot's visual server to do low level rendering and transformation, as for some reason regualar canvas item draw commands didn't seem to work. I'm not entirely sure why this was, testing an earlier build using the draw commands worked fine, even when I changed the node type to node-2d instead of polygon2d (which had its own draw cycle). This is need for the visual server for basic commands like transformation and clearing is likely a bug, but I never got around to fixing it.
+
+figuring out the shading took some work, but I eventually got it working where I could texture the mesh along its' path
+
+that's more or less it, no doubt when I return i'll be totally lost, but hopefully this document will prove somewhat helpful in getting back on track
+
+
+Below is my plan to actually distort the mesh and show moving bulges on the surface snake texture. Before that though, I want to quickly go over my plans for the project.
+
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+I want to move the project to 3D. I think it might actually be easier to get the bulges and everything working in 3d, as I can just import any needed
+meshes, and use a shader to color them for things like normal and displacement information. 
+
+I'm thinking that the game will be a sorta stealth puzzler, where the goal is to eat everyone in a given area. To play with verticallity, maybe you can climb structures, or trees and drop down onto your prey. Perhaps the game takes place in a campsite? The AI will be more complex than I originally intended, as well as the animations, but I think if I can pull everything off it'll be amazing. Hopefully by the time I return to the project, I will have a bettter grasp of the complexities of 3d modeling, animation, and AI and will be able to create a game to be proud of.
+
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 How I'm going to distort my pseudo mesh.
-
-
 
 each prey will have data to accompany:
 

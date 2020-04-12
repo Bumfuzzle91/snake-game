@@ -16,7 +16,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Snake Game"
-run/main_scene="res://snake/snake.tscn"
+run/main_scene="res://stages/testing_3d/3d_bulges_from_shader.tscn"
 config/icon="res://icon.png"
 
 [display]

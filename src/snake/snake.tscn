@@ -9,14 +9,14 @@
 [ext_resource path="res://snake/snake_head.gd" type="Script" id=7]
 [ext_resource path="res://snake/shading/snake_body_material.tres" type="Material" id=8]
 
-[sub_resource type="Curve" id=2]
+[sub_resource type="Curve" id=1]
 min_value = -1.0
 _data = [ Vector2( 0, 0.0181819 ), 0.0, 0.0, 0, 0, Vector2( 1, -1 ), 0.0, 0.0, 0, 0 ]
 
-[sub_resource type="CurveTexture" id=3]
-curve = SubResource( 2 )
+[sub_resource type="CurveTexture" id=2]
+curve = SubResource( 1 )
 
-[sub_resource type="Curve2D" id=1]
+[sub_resource type="Curve2D" id=3]
 _data = {
 "points": PoolVector2Array(  )
 }
@@ -34,10 +34,10 @@ __meta__ = {
 "_edit_group_": true
 }
 scale_texture = ExtResource( 5 )
-distort_curve_texture = SubResource( 3 )
+distort_curve_texture = SubResource( 2 )
 
 [node name="Path2D" type="Path2D" parent="Body"]
-curve = SubResource( 1 )
+curve = SubResource( 3 )
 script = ExtResource( 4 )
 
 [node name="PathFollow2D" type="PathFollow2D" parent="Body/Path2D"]
